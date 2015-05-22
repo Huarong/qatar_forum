@@ -59,6 +59,9 @@ def main():
         f_url = codecs.open(url_path, 'wb', encoding='utf-8')
         s = requests.Session()
         for page in range(1, max_page):
+            if page > max_page:
+                logger.info('[touch max_page] category %s exit at page %s' % (category, page))
+                break
             if continue_null_count > 5:
                 logger.info('category %s exit at page %s' % (category, page - continue_null_count))
                 break
