@@ -42,19 +42,18 @@ def mkdir(dir_name):
 
 def main():
     logger = init_log('qatarliving', './log')
-    categories = ['qatar-living-lounge', 'welcome-qatar',
-    'advice-help', 'socialising', 'family-life-qatar', 'funnies', 'working-qatar',
+    categories = ['family-life-qatar', 'funnies', 'working-qatar',
     'salary-allowances', 'electronics-0', 'health-fitness', 'computers-internet',
     'opportunities', 'politics', 'beauty-style', 'qatari-culture', 'environment',
     'pets-animals', 'news', 'language', 'missing-home', 'company-news',
     'qatar-living-website', 'technology', 'ramadan', 'dining', 'fashion',
     'recipes', 'qatar-2022', 'movies-qatar']
-    max_page = 30000
+    max_page = 2000
     base_url = 'http://www.qatarliving.com/forum/qatar-living-lounge?page=3'
-    continue_null_count = 0
     url_dir = './urls'
     mkdir(url_dir)
     for category in categories:
+        continue_null_count = 0
         url_path = os.path.join(url_dir, category)
         f_url = codecs.open(url_path, 'wb', encoding='utf-8')
         s = requests.Session()
@@ -66,13 +65,16 @@ def main():
                 logger.info('category %s exit at page %s' % (category, page - continue_null_count))
                 break
             url = 'http://www.qatarliving.com/forum/%s?page=%s' % (category, page)
-            r = s.get(url)
-            url_pat = ur'<a href="(/forum/.+?/posts/.+?)"'
+            try:
+                r = s.get(url)
+            except:
+                continue
+            url_pat = ur'<a href="(.+?/posts/.+?)"'
             url_reg = re.compile(url_pat)
             found = url_reg.findall(r.content)
             found = [e for e in found if '#comment' not in e]
-            if found > 7:
-                found = found[:-7]
+            if len(found) > 14:
+                found = found[:-14]
                 continue_null_count = 0
                 for e in found:
                     f_url.write('%s\n' % e)
