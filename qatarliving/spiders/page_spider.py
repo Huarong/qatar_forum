@@ -7,13 +7,13 @@ def load_urls(path):
     urls = []
     if type(path) == str:
         with open(path) as f:
-            urls = [line.rstrip() for line in f.readlines()]
+            urls = ['http://www.qatarliving.com%s' % line.rstrip() for line in f.readlines()]
             return urls
     elif type(path) == list:
         for p in path:
-            with open(path) as f:
+            with open(p) as f:
                 for line in f:
-                    urls.append(line.rstrip())
+                    urls.append('http://www.qatarliving.com%s' % line.rstrip())
         return urls
     else:
         raise ValueError('invalid parameter type: %s' % path)

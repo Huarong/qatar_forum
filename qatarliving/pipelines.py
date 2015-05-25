@@ -5,8 +5,17 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
+import os
 from scrapy import signals
 from scrapy.contrib.exporter import JsonLinesItemExporter
+
+
+
+def mkdir(dir_name):
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+    return None
+
 
 class QatarlivingPipeline(object):
     def __init__(self):
@@ -20,7 +29,8 @@ class QatarlivingPipeline(object):
         return pipeline
 
     def spider_opened(self, spider):
-        file = open('%s.json' % spider.name, 'w+b')
+        mkdir('output')
+        file = open('output/%s.json' % spider.name, 'w+b')
         self.files[spider] = file
         self.exporter = JsonLinesItemExporter(file)
         self.exporter.start_exporting()
