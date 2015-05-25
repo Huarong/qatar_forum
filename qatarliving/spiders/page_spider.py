@@ -23,8 +23,29 @@ class PageSpider(scrapy.spider.Spider):
     name = "Page"
     allowed_domains = ["qatarliving.com"]
 
-    sectors = ['advice-help', 'family-life-qatar', 'funnies', 'qatar-living-lounge', 'socialising',
-                'welcome-qatar', 'working-qatar']
+    sectors = ['company-news',
+             'pets-animals',
+             'movies-qatar',
+             'environment',
+             'qatar-2022',
+             'ramadan',
+             'news',
+             'dining',
+             'beauty-style',
+             'opportunities',
+             'recipes',
+             'qatari-culture',
+             'missing-home',
+             'electronics-0',
+             'salary-allowances',
+             'qatar-living-website',
+             'technology',
+             'fashion',
+             'computers-internet',
+             'language',
+             'health-fitness',
+             'politics']
+
     start_urls = load_urls(['urls/%s' % e for e in sectors])
 
     def parse(self, response):
